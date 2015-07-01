@@ -1,0 +1,17 @@
+{
+  "name": "jmux",
+  "version": "0.1.0",
+  "description": "tmux management",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "tmux"
+  ],
+  "author": "Martin Camacho <martin@mcamac.com>",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "2.8.1"
+  }
+}
