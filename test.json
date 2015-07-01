@@ -1,0 +1,15 @@
+{
+  "title": "kensho",
+  "root": "/Users/martin/code/zentreefish",
+  "windows": [
+    {
+      "title": "server",
+      "layout": "even-vertical",
+      "panes": [
+        "ls -la",
+        "git status",
+        "echo \"foo\""
+      ]
+    }
+  ]
+}
