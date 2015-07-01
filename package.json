@@ -1,6 +1,7 @@
 {
   "name": "jmux",
   "version": "0.1.0",
+  "bin": "./build/cli.js",
   "description": "tmux management",
   "main": "index.js",
   "scripts": {
@@ -12,6 +13,8 @@
   "author": "Martin Camacho <martin@mcamac.com>",
   "license": "MIT",
   "dependencies": {
-    "commander": "2.8.1"
+    "commander": "2.8.1",
+    "kexec": "1.2.0",
+    "ramda": "0.15.1"
   }
 }
