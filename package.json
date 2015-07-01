@@ -15,6 +15,7 @@
   "dependencies": {
     "commander": "2.8.1",
     "kexec": "1.2.0",
+    "lazy-ass": "0.5.8",
     "ramda": "0.15.1"
   },
   "devDependencies": {

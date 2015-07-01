@@ -5,12 +5,26 @@ import {exec} from 'child_process'
 import kexec from 'kexec'
 import R from 'ramda'
 import {resolve} from 'path'
+require('lazy-ass')
 
 program
   .version('0.1.0')
   .option('-c, --config [config]', 'Config location')
   .option('-n, --just-print', 'Just print tmux command')
   .parse(process.argv)
+
+
+const SUPPORTED_LAYOUTS = {
+  'even-horizontal': {
+    nextPaneFlag: '-R',
+    splitFlag: '-h'
+  },
+  'even-vertical': {
+    nextPaneFlag: '-D',
+    splitFlag: '-v'
+  }
+}
+
 
 function parseTmuxConfig(config) {
   var sessionCmd = `new-session -s "${config.title}"`
@@ -20,9 +34,12 @@ function parseTmuxConfig(config) {
     var windowCommands = []
     windowCommands.push(`new-window -n "${window.title}" -c "${config.root}"`)
 
+    la(SUPPORTED_LAYOUTS[window.layout], 'layout not supported', window.layout)
+    var layoutParams = SUPPORTED_LAYOUTS[window.layout]
+
     // Create panes
     var paneCommands = R.times((paneCommand) => {
-      return `split-window -v -c "${config.root}"`
+      return `split-window ${layoutParams.splitFlag} -c "${config.root}"`
     }, window.panes.length - 1)
     paneCommands = R.intersperse('select-pane -D', paneCommands)
     windowCommands.push(paneCommands)
@@ -37,7 +54,7 @@ function parseTmuxConfig(config) {
       var escapedPaneCommand = paneCommand.replace(/"/g, '\\\"')
       windowCommands.push([
         `send-keys "${escapedPaneCommand}" "Enter"`,
-        `select-pane -D`])
+        `select-pane ${layoutParams.nextPaneFlag}`])
     })
     subcommands.push(windowCommands)
   }, config.windows)
