@@ -16,5 +16,9 @@
     "commander": "2.8.1",
     "kexec": "1.2.0",
     "ramda": "0.15.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "3.1.20",
+    "eslint": "0.24.0"
   }
 }
