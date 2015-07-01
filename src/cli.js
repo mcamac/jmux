@@ -7,8 +7,11 @@ import R from 'ramda'
 import {resolve} from 'path'
 require('lazy-ass')
 
+
+var packageJson = require('../package.json')
+
 program
-  .version('0.1.0')
+  .version(packageJson.version)
   .option('-c, --config [config]', 'Config location')
   .option('-n, --just-print', 'Just print tmux command')
   .parse(process.argv)
@@ -30,7 +33,7 @@ function parseTmuxConfig(config) {
   var sessionCmd = `new-session -s "${config.title}"`
   var subcommands = [sessionCmd]
 
-  R.forEach((window) => {
+  var allWindowCommands = R.map((window) => {
     var windowCommands = []
     windowCommands.push(`new-window -n "${window.title}" -c "${config.root}"`)
 
@@ -56,13 +59,13 @@ function parseTmuxConfig(config) {
         `send-keys "${escapedPaneCommand}" "Enter"`,
         `select-pane ${layoutParams.nextPaneFlag}`])
     })
-    subcommands.push(windowCommands)
+    return windowCommands
   }, config.windows)
 
+  subcommands.push(allWindowCommands)
   subcommands.push(`kill-window -t 0`)
 
-  var command = 'tmux ' + R.flatten(subcommands).join(' \\; ')
-  return command;
+  return 'tmux ' + R.flatten(subcommands).join(' \\; ')
 }
 
 var tmuxCommand = parseTmuxConfig(require(resolve(process.cwd(), program.config)))

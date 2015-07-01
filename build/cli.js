@@ -15,7 +15,9 @@ var resolve = require("path").resolve;
 
 require("lazy-ass");
 
-program.version("0.1.0").option("-c, --config [config]", "Config location").option("-n, --just-print", "Just print tmux command").parse(process.argv);
+var packageJson = require("../package.json");
+
+program.version(packageJson.version).option("-c, --config [config]", "Config location").option("-n, --just-print", "Just print tmux command").parse(process.argv);
 
 var SUPPORTED_LAYOUTS = {
   "even-horizontal": {
@@ -32,7 +34,7 @@ function parseTmuxConfig(config) {
   var sessionCmd = "new-session -s \"" + config.title + "\"";
   var subcommands = [sessionCmd];
 
-  R.forEach(function (window) {
+  var allWindowCommands = R.map(function (window) {
     var windowCommands = [];
     windowCommands.push("new-window -n \"" + window.title + "\" -c \"" + config.root + "\"");
 
@@ -54,13 +56,13 @@ function parseTmuxConfig(config) {
       var escapedPaneCommand = paneCommand.replace(/"/g, "\\\"");
       windowCommands.push(["send-keys \"" + escapedPaneCommand + "\" \"Enter\"", "select-pane " + layoutParams.nextPaneFlag]);
     });
-    subcommands.push(windowCommands);
+    return windowCommands;
   }, config.windows);
 
+  subcommands.push(allWindowCommands);
   subcommands.push("kill-window -t 0");
 
-  var command = "tmux " + R.flatten(subcommands).join(" \\; ");
-  return command;
+  return "tmux " + R.flatten(subcommands).join(" \\; ");
 }
 
 var tmuxCommand = parseTmuxConfig(require(resolve(process.cwd(), program.config)));
