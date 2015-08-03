@@ -39,25 +39,27 @@ function parseTmuxConfig(config) {
 
     la(SUPPORTED_LAYOUTS[window.layout], 'layout not supported', window.layout)
     var layoutParams = SUPPORTED_LAYOUTS[window.layout]
+    var splitFlag = layoutParams.splitFlag;
+    var nextPaneFlag = layoutParams.nextPaneFlag;
 
     // Create panes
     var paneCommands = R.times((paneCommand) => {
-      return `split-window ${layoutParams.splitFlag} -c "${config.root}"`
+      return `split-window ${splitFlag} -c "${config.root}"`
     }, window.panes.length - 1)
-    paneCommands = R.intersperse('select-pane -D', paneCommands)
+    paneCommands = R.intersperse(`select-pane ${nextPaneFlag}`, paneCommands)
     windowCommands.push(paneCommands)
 
     // Choose layout and select top pane
     windowCommands.push([
       `select-layout ${window.layout}`,
-      `select-pane -t 0`])
+      'select-pane -t 0'])
 
     // Send keys to each pane in order
     window.panes.forEach((paneCommand) => {
       var escapedPaneCommand = paneCommand.replace(/"/g, '\\\"')
       windowCommands.push([
         `send-keys "${escapedPaneCommand}" "Enter"`,
-        `select-pane ${layoutParams.nextPaneFlag}`])
+        `select-pane ${nextPaneFlag}`])
     })
     return windowCommands
   }, config.windows)
