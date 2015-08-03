@@ -49,10 +49,12 @@ function parseTmuxConfig(config) {
     paneCommands = R.intersperse(`select-pane ${nextPaneFlag}`, paneCommands)
     windowCommands.push(paneCommands)
 
-    // Choose layout and select top pane
-    windowCommands.push([
-      `select-layout ${window.layout}`,
-      'select-pane -t 0'])
+    // Wrap around to the first pane
+    windowCommands.push(
+      R.repeat(`select-pane ${nextPaneFlag}`, 2));
+
+    // Choose layout
+    windowCommands.push(`select-layout ${window.layout}`)
 
     // Send keys to each pane in order
     window.panes.forEach((paneCommand) => {
