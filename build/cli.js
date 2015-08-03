@@ -47,17 +47,20 @@ function parseTmuxConfig(config) {
     la(SUPPORTED_LAYOUTS[window.layout], 'layout not supported', window.layout);
     var layoutParams = SUPPORTED_LAYOUTS[window.layout];
     var splitFlag = layoutParams.splitFlag;
-    var nextPaneFlag = layoutParams.nextPaneFlag;
 
     // Create panes
+    var nextPaneFlag = layoutParams.nextPaneFlag;
     var paneCommands = _ramda2['default'].times(function (paneCommand) {
       return 'split-window ' + splitFlag + ' -c "' + config.root + '"';
     }, window.panes.length - 1);
     paneCommands = _ramda2['default'].intersperse('select-pane ' + nextPaneFlag, paneCommands);
     windowCommands.push(paneCommands);
 
-    // Choose layout and select top pane
-    windowCommands.push(['select-layout ' + window.layout, 'select-pane -t 0']);
+    // Wrap around to the first pane
+    windowCommands.push(_ramda2['default'].repeat('select-pane ' + nextPaneFlag, 2));
+
+    // Choose layout
+    windowCommands.push('select-layout ' + window.layout);
 
     // Send keys to each pane in order
     window.panes.forEach(function (paneCommand) {

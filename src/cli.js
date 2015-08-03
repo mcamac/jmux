@@ -39,8 +39,7 @@ function parseTmuxConfig(config) {
 
     la(SUPPORTED_LAYOUTS[window.layout], 'layout not supported', window.layout)
     var layoutParams = SUPPORTED_LAYOUTS[window.layout]
-    var splitFlag = layoutParams.splitFlag;
-    var nextPaneFlag = layoutParams.nextPaneFlag;
+    var {splitFlag, nextPaneFlag} = layoutParams;
 
     // Create panes
     var paneCommands = R.times((paneCommand) => {
