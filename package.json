@@ -1,6 +1,6 @@
 {
   "name": "jmux",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "bin": "./src/cli.js",
   "description": "tmux management",
   "main": "index.js",
