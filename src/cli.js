@@ -30,8 +30,7 @@ const SUPPORTED_LAYOUTS = {
 
 
 function parseTmuxConfig(config) {
-  var sessionCmd = `new-session -s "${config.title}"`
-  var subcommands = [sessionCmd]
+  var subcommands = process.env.TMUX ? [] : [`new-session -s "${config.title}"`]
 
   var allWindowCommands = R.map((window) => {
     var windowCommands = []
