@@ -1,7 +1,7 @@
 {
   "name": "jmux",
-  "version": "0.2.2",
-  "bin": "./build/cli.js",
+  "version": "0.3.1",
+  "bin": "./src/cli.js",
   "description": "tmux management",
   "main": "index.js",
   "scripts": {
@@ -13,13 +13,13 @@
   "author": "Martin Camacho <martin@mcamac.com>",
   "license": "MIT",
   "dependencies": {
-    "commander": "2.8.1",
-    "kexec": "1.2.0",
-    "lazy-ass": "0.5.8",
-    "ramda": "0.15.1"
+    "commander": "2.9.0",
+    "kexec": "3.0.0",
+    "lazy-ass": "1.5.0",
+    "ramda": "0.22.1"
   },
   "devDependencies": {
-    "babel-eslint": "3.1.20",
-    "eslint": "0.24.0"
+    "babel-eslint": "7.0.0",
+    "eslint": "3.8.1"
   }
 }

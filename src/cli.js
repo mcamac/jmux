@@ -1,14 +1,12 @@
 #!/usr/bin/env node
 
-import program from 'commander'
-import {exec} from 'child_process'
-import kexec from 'kexec'
-import R from 'ramda'
-import {resolve} from 'path'
-require('lazy-ass')
+const program = require('commander')
+const kexec = require('kexec')
+const R = require('ramda')
+const resolve = require('path').resolve
+const la = require('lazy-ass')
 
-
-var packageJson = require('../package.json')
+const packageJson = require('../package.json')
 
 program
   .version(packageJson.version)
