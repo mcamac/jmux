@@ -28,8 +28,7 @@ const SUPPORTED_LAYOUTS = {
 
 
 function parseTmuxConfig(config) {
-  var sessionCmd = `new-session -s "${config.title}"`
-  var subcommands = [sessionCmd]
+  var subcommands = process.env.TMUX ? [] : [`new-session -s "${config.title}"`]
 
   var allWindowCommands = R.map((window) => {
     var windowCommands = []
@@ -64,7 +63,7 @@ function parseTmuxConfig(config) {
   }, config.windows)
 
   subcommands.push(allWindowCommands)
-  subcommands.push(`kill-window -t 0`)
+  if (!process.env.TMUX) subcommands.push(`kill-window -t 0`)
 
   return 'tmux ' + R.flatten(subcommands).join(' \\; ')
 }
